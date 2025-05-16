@@ -54,14 +54,14 @@ class GraphicsView:
             title='Evolución del cantidad de Energía Renovable en América Latina (2020-2024)',
             labels={
                 'ANIO': 'Año',
-                'ELECTRICIDAD_GENERADA_ACUMULADA': 'Cantidad de Energía Renovable (GWH)',
+                'ELECTRICIDAD_GENERADA_ACUMULADA': 'Cantidad de Energía Renovable (GWh)',
                 'PAIS': 'País'
             }
         )
         # Mejorar el diseño del gráfico
         fig.update_layout(
             xaxis=dict(dtick=1),  # Coloca un tick cada año
-            yaxis=dict(ticksuffix=' GWH'),  # Agrega el símbolo de cantidad al eje Y
+            yaxis=dict(ticksuffix=' GWh'),  # Agrega el símbolo de cantidad al eje Y
             legend_title_text='País',  # Título de la leyenda
             template='plotly_white'  # Usar el tema blanco de Plotly
         )
@@ -115,14 +115,14 @@ class GraphicsView:
             title='Evolución de Energía No Renovable en América Latina (2020-2024)',
             labels={
                 'ANIO': 'Año',
-                'ELECTRICIDAD_GENERADA_ACUMULADA': 'Cantidad de Energía No Renovable (GWH)',
+                'ELECTRICIDAD_GENERADA_ACUMULADA': 'Cantidad de Energía No Renovable (GWh)',
                 'PAIS': 'País'
             }
         )
         # Mejorar el diseño del gráfico
         fig.update_layout(
             xaxis=dict(dtick=1),  # Coloca un tick cada año
-            yaxis=dict(ticksuffix=' GWH'),  # Agregar el símbolo de cantidad al eje Y
+            yaxis=dict(ticksuffix=' GWh'),  # Agregar el símbolo de cantidad al eje Y
             legend_title_text='País',  # Título de la leyenda
             template='plotly_white'  # Usar el tema blanco de Plotly
         )
@@ -163,33 +163,25 @@ class GraphicsView:
 
 
     @staticmethod
-    def plot_production_vs_consumption_colombia(df_colombia):
-        """
-        Crea un gráfico de barras agrupadas para comparar la producción neta de electricidad
-        vs el consumo final en Colombia durante el año 2024.
-
-        Parámetros:
-            df_colombia (DataFrame): Datos de producción y consumo de electricidad en Colombia.
-
-        Retorna:
-            fig (plotly.graph_objects.Figure): Gráfico interactivo de barras.
-        """
+    def plot_distribution_over_net_production_colombia(df_distribution):
         fig = px.bar(
-            df_colombia,
-            x='MES',  # Eje X: Meses
-            y='ELECTRICIDAD_GENERADA_GWH',  # Eje Y: Electricidad generada en GWh
-            color='PRODUCTO',  # Diferenciar por el tipo de producto (producción, consumo)
-            barmode='group',  # Barras agrupadas por tipo de producto
-            title='Producción Neta vs Consumo Final (Colombia 2024)',
-            labels={'ELECTRICIDAD_GENERADA_GWH': 'Electricidad (GWh)', 'MES': 'Mes'},
-            color_discrete_sequence=px.colors.qualitative.Set1  # Colores predefinidos
+            df_distribution,
+            x="año",
+            y="% sobre Producción Neta",
+            color="Categoría Energética",
+            barmode="group",
+            title="Distribución porcentual sobre la Producción Neta de Electricidad - Colombia",
+            labels={
+                "% sobre Producción Neta": "% sobre Producción Neta (%)",
+                "año": "Año",
+                "Categoría Energética": "Categoría Energética"
+            }
         )
-        
-        # Personalización del gráfico
         fig.update_layout(
-            xaxis_title='Mes',
-            yaxis_title='Electricidad Generada (GWh)',
-            template='plotly_white'  # Usamos el tema blanco de Plotly
+            xaxis_title="Año",
+            yaxis_title="% sobre Producción Neta",
+            legend_title="Categoría Energética",
+            bargap=0.2
         )
         return fig
 

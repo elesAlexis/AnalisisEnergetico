@@ -65,24 +65,52 @@ class SplitDataSet:
         ]
 
 
-    # Método para obtener la comparación entre producción y consumo de energía en Colombia en 2024
+    # Método para obtener la distribución (en porcentaje) de consumo, pérdidas, exportaciones e importaciones 
+    # sobre la producción neta de electricidad en Colombia para diciembre de 2024
     @staticmethod
-    def get_colombia_production_vs_consumption_2024(df):
-        # Diccionario para mapear los números de los meses a nombres
-        meses = {1: 'Enero', 2: 'Febrero', 3: 'Marzo', 4: 'Abril', 5: 'Mayo', 6: 'Junio',
-                 7: 'Julio', 8: 'Agosto', 9: 'Septiembre', 10: 'Octubre', 11: 'Noviembre', 12: 'Diciembre'}
-        
-        # Filtramos los datos para Colombia, en el año 2024, y los productos de interés (producción y consumo)
-        df_colombia = df[
-            (df['PRODUCTO'].isin(['Producción neta de electricidad', 'Consumo final'])) &  # Filtramos los productos
-            (df['ANIO'] == 2024) &  # Solo año 2024
-            (df['PAIS'] == 'Colombia')  # Solo Colombia
-        ][['MES', 'PRODUCTO', 'ELECTRICIDAD_GENERADA_GWH']]  # Seleccionamos las columnas necesarias
-        
-        # Convertimos el número del mes a su nombre correspondiente
-        df_colombia['MES'] = df_colombia['MES'].map(meses)
-        
-        return df_colombia
+    def get_distribution_over_net_production_colombia(df):
+        # Productos clave
+        productos_interes = [
+            'Producción neta de electricidad',
+            'Consumo final',
+            'Pérdidas de distribución',
+            'Exportaciones totales'
+        ]
+
+        # Filtrar Colombia, diciembre y productos relevantes
+        df_filtrado = df[
+            (df['PAIS'] == 'Colombia') &
+            (df['MES'] == 12) &
+            (df['PRODUCTO'].isin(productos_interes))
+        ][['ANIO', 'PRODUCTO', 'ELECTRICIDAD_GENERADA_ACUMULADA']].copy()
+
+        # Pivotear para tener cada producto como columna
+        df_pivot = df_filtrado.pivot(index='ANIO', columns='PRODUCTO', values='ELECTRICIDAD_GENERADA_ACUMULADA').reset_index()
+
+        # Calcular los porcentajes respecto a Producción neta
+        df_pivot['% Consumo'] = (df_pivot['Consumo final'] / df_pivot['Producción neta de electricidad']) * 100
+        df_pivot['% Pérdidas'] = (df_pivot['Pérdidas de distribución'] / df_pivot['Producción neta de electricidad']) * 100
+        df_pivot['% Exportaciones'] = (df_pivot['Exportaciones totales'] / df_pivot['Producción neta de electricidad']) * 100
+
+        # Unir resultados en formato largo
+        df_resultado = pd.melt(
+            df_pivot,
+            id_vars='ANIO',
+            value_vars=['Consumo final', 'Pérdidas de distribución', 'Exportaciones totales'],
+            var_name='Categoría Energética',
+            value_name='Electricidad (GWh)'
+        )
+
+        df_resultado['% sobre Producción Neta'] = pd.melt(
+            df_pivot,
+            id_vars='ANIO',
+            value_vars=['% Consumo', '% Pérdidas', '% Exportaciones']
+        )['value']
+
+        # Renombrar para visualización
+        df_resultado = df_resultado.rename(columns={'ANIO': 'año'})
+
+        return df_resultado
 
 
     # Método para obtener los datos de energía renovable y no renovable de Colombia
@@ -113,3 +141,4 @@ class SplitDataSet:
         df_filtered['Porcentaje'] = (df_filtered['ELECTRICIDAD_GENERADA_ACUMULADA'] / total) * 100
         
         return df_filtered
+

@@ -1,4 +1,4 @@
-#Se importa las librería que se van usar en la limpieza 
+# Se importa la librería que se va a usar en la limpieza  
 import pandas as pd
 
 def load_and_clean_data(filepath):
@@ -89,5 +89,25 @@ def load_and_clean_data(filepath):
     print("\n📈 ESTADÍSTICAS DESCRIPTIVAS")
     print("-" * 40)
     print(df.describe())
+
+    # ================================
+    # 🔍 Agregar columna de porcentaje
+    # ================================
+
+    # Filtrar Colombia
+    filtro = (df['PAIS'] == 'Colombia') & (df['MES'] == 12)
+
+    # Obtener el valor de producción neta de electricidad en ese periodo
+    prod_neta = df.loc[filtro & (df['PRODUCTO'] == 'Producción neta de electricidad'), 'ELECTRICIDAD_GENERADA_ACUMULADA']
+
+    if not prod_neta.empty:
+        valor_prod_neta = prod_neta.values[0]
+
+        # Solo para registros de Colombia, calcular porcentaje
+        df.loc[filtro, 'PORCENTAJE_SOBRE_PRODUCCION_NETA'] = (
+            df.loc[filtro, 'ELECTRICIDAD_GENERADA_ACUMULADA'] / valor_prod_neta
+        ) * 100
+    else:
+        print("⚠️ No se encontró 'Producción neta de electricidad' para Colombia en diciembre 2024. No se generó columna de porcentaje.")
 
     return df
