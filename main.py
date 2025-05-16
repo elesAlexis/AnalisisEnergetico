@@ -1,13 +1,43 @@
+"""
+Aplicación Streamlit para la presentación interactiva del panorama energético en América y Colombia (2020-2024).
+
+Este script carga, procesa y visualiza datos energéticos provenientes de un dataset CSV, utilizando funciones
+modulares importadas desde los archivos CleanData.py, SplitDataSet.py y GraphicsView.py. Se presentan
+gráficos y análisis sobre producción, consumo, comercio y evolución de fuentes renovables y no renovables.
+
+Estructura:
+- Configuración de la interfaz y estilo
+- Carga y limpieza de datos
+- Segmentación y filtrado específico de datos
+- Visualización de gráficos con explicaciones
+- Resultados y conclusiones
+- Fuentes de datos y mensaje final
+
+Requiere:
+- Streamlit
+- Módulos CleanData, SplitDataSet y GraphicsView
+"""
+
 # Importamos las bibliotecas necesarias
 import streamlit as st
 from CleanData import load_and_clean_data
 from SplitDataSet import SplitDataSet
 from GraphicsView import GraphicsView
 
-# Configuración de la página
+# Configuración básica de la página Streamlit (tamaño, título e icono)
 st.set_page_config(layout="wide", page_title="Panorama Energético en América y Colombia", page_icon="📊")
 
-# Portada de la presentación
+# CSS para ocultar elementos por defecto de la interfaz Streamlit para una presentación limpia
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+# Sección Portada de la presentación con título, subtítulo y descripción
 st.markdown(
     """
     <div style='text-align: center; padding: 50px 0;'>
@@ -25,11 +55,12 @@ st.markdown(
 
 st.markdown("---")
 
-# Cargar y preparar datos
-filepath = 'DataSet.csv'
-df = load_and_clean_data(filepath)
+# Carga y limpieza de datos desde archivo CSV con indicador de progreso para el usuario
+with st.spinner("Cargando datos..."):
+    filepath = 'DataSet.csv'  # Ruta del archivo con los datos
+    df = load_and_clean_data(filepath)  # Función importada para limpieza y carga
 
-# Filtrar y segmentar datos necesarios
+# Segmentación y filtrado de datos para cada análisis específico
 america_2024 = SplitDataSet.get_data_america_2024(df)
 renewable_trend = SplitDataSet.get_renewable_percentage(df)
 non_renewable_trend = SplitDataSet.get_non_renewable_percentage(df)
@@ -38,6 +69,8 @@ colombia_export = SplitDataSet.get_colombia_energy_export_data(df)
 dist_sources_colombia = SplitDataSet.get_energy_source_distribution(df)
 dist_over_net_prod = SplitDataSet.get_distribution_over_net_production_colombia(df)
 renovables_vs_no = SplitDataSet.get_renewable_and_nonrenewable_data(df)
+
+# Visualizaciones y textos explicativos para cada sección del análisis energético
 
 # Sección 1: Producción vs Consumo en América
 st.subheader("1. Comparativo de Producción Neta y Consumo Final en América (2024)")
@@ -129,9 +162,8 @@ limpia y resiliente.
 
 st.markdown("---")
 
-# Sección de Resultados Relevantes
+# Resultados relevantes destacados en lista
 st.subheader("📈 Resultados Relevantes")
-
 st.markdown("""
 <ul style='font-size: 1.1em;'>
     <li><strong>EE.UU. y Brasil</strong> lideran el consumo total de electricidad en América.</li>
@@ -150,7 +182,7 @@ st.markdown("""
 
 st.markdown("---")
 
-# Sección Final: Conclusiones y Proyección
+# Conclusiones generales extraídas del análisis
 st.subheader("📌 Conclusiones Generales")
 st.markdown("""
 1. **América muestra un panorama energético mixto.** Algunos países son autosuficientes en su generación eléctrica, mientras otros aún dependen de importaciones, lo que genera desigualdades en seguridad energética.
@@ -168,6 +200,7 @@ st.markdown("""
 
 st.markdown("---")
 
+# Proyección futura para el sector energético regional
 st.subheader("🔮 Proyección a Futuro")
 st.markdown("""
 - Se espera que la región avance hacia una **mayor adopción de fuentes renovables**, especialmente con inversiones en energía solar y eólica.
@@ -176,12 +209,21 @@ st.markdown("""
 
 - A medida que aumente la presión por cumplir los compromisos climáticos, los países con matrices energéticas aún intensivas en carbono deberán acelerar sus procesos de transición.
 
-- La **digitalización, el almacenamiento energético y la cooperación entre países** serán claves para una red eléctrica más estable, eficiente y sostenible en América Latina.
+- La **digitalización, el almacenamiento energético y la cooperación entre países** serán claves para una red eléctrica más estable, eficiente y sostenible en América.
 """)
+st.markdown("---")
+
+# Fuente oficial de los datos usados en el análisis
+st.subheader("📚 Fuente de los Datos")
+st.markdown("""
+Los datos utilizados en esta aplicación provienen de la <a href='https://www.iea.org/' target='_blank'>Agencia Internacional de Energía (IEA)</a>, 
+una fuente reconocida a nivel mundial por su análisis energético detallado y confiable. La información ha sido procesada y organizada para fines
+de visualización y análisis comparativo entre países de América y el caso particular de Colombia durante el periodo 2020–2024.
+""", unsafe_allow_html=True)
 
 st.markdown("---")
 
-# Frase de cierre
+# Frase de cierre motivadora para la presentación
 st.markdown("""
 <div style='text-align: center; padding-top: 30px; font-size: 1.3em; color: #003366;'>
     <em>
@@ -190,4 +232,3 @@ st.markdown("""
     </em>
 </div>
 """, unsafe_allow_html=True)
-
