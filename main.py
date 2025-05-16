@@ -129,6 +129,27 @@ limpia y resiliente.
 
 st.markdown("---")
 
+# Sección de Resultados Relevantes
+st.subheader("📈 Resultados Relevantes")
+
+st.markdown("""
+<ul style='font-size: 1.1em;'>
+    <li><strong>EE.UU. y Brasil</strong> lideran el consumo total de electricidad en América.</li>
+    <li><strong>Costa Rica</strong> presenta el menor consumo relativo en comparación con el resto de países.</li>
+    <li>Se observa un <strong>aumento sostenido de las energías renovables</strong> en gran parte de la región.</li>
+    <li><strong>Colombia</strong> ha mostrado un crecimiento en sus exportaciones de electricidad desde el año <strong>2023</strong>.</li>
+</ul>
+
+<h4 style='padding-top: 10px;'>Matriz energética de Colombia en 2024:</h4>
+<ul style='font-size: 1.05em;'>
+    <li><strong>54.3%</strong> proviene de <strong>hidroeléctrica</strong>.</li>
+    <li>La participación <strong>solar</strong> es aún baja, con un <strong>4.01%</strong>.</li>
+    <li>Persistente uso de fuentes <strong>fósiles</strong> como gas, carbón y petróleo.</li>
+</ul>
+""", unsafe_allow_html=True)
+
+st.markdown("---")
+
 # Sección Final: Conclusiones y Proyección
 st.subheader("📌 Conclusiones Generales")
 st.markdown("""
