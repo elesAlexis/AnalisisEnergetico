@@ -1,19 +1,8 @@
 import plotly.express as px
+import plotly.graph_objects as go  # Asegúrate de que esté importado arriba junto con plotly.express
+
 
 class GraphicsView:
-
-    @staticmethod
-    def plot_production_vs_consumption(data):
-        """Gráfico de barras agrupadas: producción neta vs consumo final en América Latina 2024."""
-        return px.bar(
-            data,
-            x='PAIS',
-            y='ELECTRICIDAD_GENERADA_ACUMULADA',
-            color='PRODUCTO',
-            barmode='group',
-            labels={'ELECTRICIDAD_GENERADA_ACUMULADA': 'Electricidad (GWh)', 'PAIS': 'País'},
-            log_y=True
-        )
 
     @staticmethod
     def plot_renewable_trend(df_energy):
@@ -105,3 +94,36 @@ class GraphicsView:
             values='Porcentaje',
             hole=0.4
         )
+
+    @staticmethod
+    def plot_radar_energy_comparison(df, selected_countries, year=2024):
+        """Gráfico radar comparando la distribución porcentual de fuentes de energía entre varios países en un año específico."""
+
+        from SplitDataSet import SplitDataSet  # Importación interna para evitar dependencia circular
+
+        categorias = ['Hidroeléctrica', 'Solar', 'Renovables combustibles', 'Carbón', 'Petróleo', 'Gas natural', 'Otras renovables agregadas']
+        fig = go.Figure()
+
+        for country in selected_countries:
+            data = SplitDataSet.get_energy_source_distribution(df, year=year, country=country)
+
+            # Asegura que todas las categorías estén presentes
+            valores = [data.loc[data['PRODUCTO'] == c, 'Porcentaje'].values[0] if c in data['PRODUCTO'].values else 0 for c in categorias]
+
+            fig.add_trace(go.Scatterpolar(
+                r=valores,
+                theta=categorias,
+                fill='toself',
+                name=country
+            ))
+
+        fig.update_layout(
+            title=f'Distribución porcentual de fuentes de energía en {year}',
+            polar=dict(
+                radialaxis=dict(visible=True, range=[0, 90])
+            ),
+            showlegend=True,
+            template='plotly_white'
+        )
+
+        return fig

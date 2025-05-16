@@ -2,19 +2,6 @@ import pandas as pd
 
 class SplitDataSet:
     
-    # Método para obtener los datos de América para el año 2024
-    @staticmethod
-    def get_data_america_2024(df):
-        # Filtramos el DataFrame para obtener los productos relacionados con la producción neta de electricidad y consumo final
-        # Filtramos solo para el mes de diciembre de 2024
-        # Seleccionamos las columnas necesarias: PAIS, PRODUCTO y ELECTRICIDAD_GENERADA_ACUMULADA
-        return df[
-            (df['PRODUCTO'].isin(['Producción neta de electricidad', 'Consumo final'])) &  # Filtramos los productos de interés
-            (df['MES'] == 12) &  # Solo diciembre
-            (df['ANIO'] == 2024)  # Solo el año 2024
-        ][['PAIS', 'PRODUCTO', 'ELECTRICIDAD_GENERADA_ACUMULADA']]  # Seleccionamos las columnas que necesitamos
-
-
     # Método para obtener los datos comerciales de Colombia (importaciones, exportaciones, producción y consumo) de los años 2020 a 2024
     @staticmethod
     def get_colombia_trade_data(df):
@@ -140,5 +127,26 @@ class SplitDataSet:
         # Calculamos el porcentaje que representa cada fuente de energía respecto al total
         df_filtered['Porcentaje'] = (df_filtered['ELECTRICIDAD_GENERADA_ACUMULADA'] / total) * 100
         
+        return df_filtered
+    
+    # Método para obtener la distribución de las fuentes de energía (hidroeléctrica, solar, etc.) en Colombia en un año específico
+    @staticmethod
+    def get_energy_source_distribution_american(df, year=2024, country=None):
+        df_filtered = df[
+            (df['ANIO'] == year) &
+            (df['MES'] == 12) &
+            (df['PRODUCTO'].isin([
+                'Hidroeléctrica', 'Solar', 'Renovables combustibles', 
+                'Carbón', 'Petróleo', 'Gas natural', 'Otras renovables agregadas'
+            ]))
+        ]
+
+        if country is not None:
+            df_filtered = df_filtered[df_filtered['PAIS'] == country]
+
+        total = df_filtered['ELECTRICIDAD_GENERADA_ACUMULADA'].sum()
+        df_filtered = df_filtered.copy()
+        df_filtered['Porcentaje'] = (df_filtered['ELECTRICIDAD_GENERADA_ACUMULADA'] / total) * 100
+
         return df_filtered
 

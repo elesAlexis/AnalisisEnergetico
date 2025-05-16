@@ -61,7 +61,7 @@ with st.spinner("Cargando datos..."):
     df = load_and_clean_data(filepath)  # Función importada para limpieza y carga
 
 # Segmentación y filtrado de datos para cada análisis específico
-america_2024 = SplitDataSet.get_data_america_2024(df)
+energy_source_distribution_american = SplitDataSet.get_energy_source_distribution_american(df)
 renewable_trend = SplitDataSet.get_renewable_percentage(df)
 non_renewable_trend = SplitDataSet.get_non_renewable_percentage(df)
 colombia_trade = SplitDataSet.get_colombia_trade_data(df)
@@ -72,15 +72,29 @@ renovables_vs_no = SplitDataSet.get_renewable_and_nonrenewable_data(df)
 
 # Visualizaciones y textos explicativos para cada sección del análisis energético
 
-# Sección 1: Producción vs Consumo en América
-st.subheader("1. Comparativo de Producción Neta y Consumo Final en América (2024)")
-st.plotly_chart(GraphicsView.plot_production_vs_consumption(america_2024))
+# Sección 1: Radar - Comparación de fuentes de energía entre países (por año)
+st.header("1. Radar: Comparación de Fuentes de Energía entre Países (por Año)")
+
+anios_disponibles = sorted(energy_source_distribution_american['ANIO'].unique(), reverse=True)
+anio_seleccionado = st.selectbox("Selecciona el año", anios_disponibles)
+
+df_anio = energy_source_distribution_american[energy_source_distribution_american['ANIO'] == anio_seleccionado]
+
+paises_disponibles = sorted(df_anio['PAIS'].unique())
+paises_seleccionados = st.multiselect("Selecciona los países a comparar", paises_disponibles, default=["Argentina", "Brasil", "Canadá", "Chile", "Colombia",  "México",  "Estados Unidos",  "Costa Rica"])
+
+if len(paises_seleccionados) >= 2:
+    radar_fig = GraphicsView.plot_radar_energy_comparison(energy_source_distribution_american, selected_countries=paises_seleccionados, year=anio_seleccionado)
+    st.plotly_chart(radar_fig)
+else:
+    st.warning("Selecciona al menos dos países para comparar.")
+
 st.markdown("""
-Este gráfico compara la cantidad de electricidad generada (producción neta) con la electricidad efectivamente utilizada
-(consumo final) en los países de América durante el año 2024. Se destacan los países con superávit energético,
-lo que refleja autosuficiencia e incluso potencial exportador, frente a aquellos con déficit, que podrían depender de
-importaciones o enfrentar riesgos de abastecimiento. Esta visualización permite identificar desequilibrios estructurales
-y oportunidades de cooperación energética en la región.
+Este gráfico de radar compara la distribución porcentual de diferentes fuentes de generación eléctrica
+entre los países seleccionados para un año específico. Permite visualizar de forma clara y directa
+las similitudes y diferencias en la matriz energética de cada nación, destacando la participación
+de fuentes renovables y no renovables. Es una herramienta clave para entender la diversidad y el
+grado de transición energética en la región americana.
 """)
 st.markdown("---")
 
