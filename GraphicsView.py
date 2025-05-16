@@ -54,7 +54,9 @@ class GraphicsView:
                 'ANIO': 'Año',
                 'ELECTRICIDAD_GENERADA_ACUMULADA': 'Cantidad de Energía Renovable (GWh)',
                 'PAIS': 'País'
-            }
+            },
+            log_y=True  # Usamos una escala logarítmica para visualizar mejor los valores grandes
+
         )
         # Mejorar el diseño del gráfico
         fig.update_layout(
@@ -87,7 +89,9 @@ class GraphicsView:
                 'ANIO': 'Año',
                 'ELECTRICIDAD_GENERADA_ACUMULADA': 'Cantidad de Energía No Renovable (GWh)',
                 'PAIS': 'País'
-            }
+            },
+            log_y=True  # Usamos una escala logarítmica para visualizar mejor los valores grandes
+
         )
         # Mejorar el diseño del gráfico
         fig.update_layout(
