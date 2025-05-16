@@ -118,7 +118,6 @@ class GraphicsView:
             ))
 
         fig.update_layout(
-            title=f'Distribución porcentual de fuentes de energía en {year}',
             polar=dict(
                 radialaxis=dict(visible=True, range=[0, 90])
             ),
