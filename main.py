@@ -248,12 +248,24 @@ de visualización y análisis comparativo entre países de América y el caso pa
 
 st.markdown("---")
 
-# Frase de cierre motivadora para la presentación
 st.markdown("""
-<div style='text-align: center; padding-top: 30px; font-size: 1.3em; color: #003366;'>
-    <em>
-        "El futuro energético de América no solo depende de sus recursos, sino de las decisiones inteligentes 
-        que tomemos hoy. Apostar por una matriz más limpia, eficiente y solidaria es apostar por el bienestar de las próximas generaciones."
-    </em>
+<div style='
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom: 20px;
+    font-size: 1.5em;
+    line-height: 1.6;
+    color: #0a2f5c;
+    background-color: #f0f4f8;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    margin-top: 30px;
+'>
+    <strong><em>
+        🌱 El futuro energético de América no solo depende de sus recursos,<br>
+        sino de las decisiones inteligentes que tomemos hoy.<br><br>
+        💡 Apostar por una matriz más limpia, eficiente y solidaria<br>
+        es apostar por el bienestar de las próximas generaciones.
+    </em></strong>
 </div>
 """, unsafe_allow_html=True)
