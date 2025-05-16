@@ -128,3 +128,45 @@ limpia y resiliente.
 """)
 
 st.markdown("---")
+
+# Sección Final: Conclusiones y Proyección
+st.subheader("📌 Conclusiones Generales")
+st.markdown("""
+1. **América muestra un panorama energético mixto.** Algunos países son autosuficientes en su generación eléctrica, mientras otros aún dependen de importaciones, lo que genera desigualdades en seguridad energética.
+
+2. **La participación de fuentes renovables está creciendo**, especialmente gracias a la energía hidroeléctrica y solar. Sin embargo, este avance no es uniforme: algunos países han mantenido o incluso reducido su generación limpia.
+
+3. **La dependencia de fuentes fósiles persiste en muchos países**, lo que representa un reto ambiental y económico frente a la volatilidad de precios y los compromisos climáticos globales.
+
+4. **Colombia ha mantenido una matriz energética predominantemente renovable**, principalmente por su uso de energía hidroeléctrica, aunque sigue habiendo espacio para diversificar hacia otras fuentes limpias como la solar o eólica.
+
+5. **El comercio de electricidad en Colombia ha sido variable**, reflejando una interacción activa con sus vecinos, pero también cierta vulnerabilidad en momentos de baja generación o alta demanda.
+
+6. **Las pérdidas en el sistema eléctrico colombiano siguen siendo un desafío.** Reducirlas podría significar un uso más eficiente de la energía generada.
+""")
+
+st.markdown("---")
+
+st.subheader("🔮 Proyección a Futuro")
+st.markdown("""
+- Se espera que la región avance hacia una **mayor adopción de fuentes renovables**, especialmente con inversiones en energía solar y eólica.
+
+- **Colombia tiene el potencial de convertirse en un exportador regional más fuerte**, si fortalece su infraestructura, mejora su eficiencia y mantiene su matriz limpia.
+
+- A medida que aumente la presión por cumplir los compromisos climáticos, los países con matrices energéticas aún intensivas en carbono deberán acelerar sus procesos de transición.
+
+- La **digitalización, el almacenamiento energético y la cooperación entre países** serán claves para una red eléctrica más estable, eficiente y sostenible en América Latina.
+""")
+
+st.markdown("---")
+
+# Frase de cierre
+st.markdown("""
+<div style='text-align: center; padding-top: 30px; font-size: 1.3em; color: #003366;'>
+    <em>
+        "El futuro energético de América no solo depende de sus recursos, sino de las decisiones inteligentes 
+        que tomemos hoy. Apostar por una matriz más limpia, eficiente y solidaria es apostar por el bienestar de las próximas generaciones."
+    </em>
+</div>
+""", unsafe_allow_html=True)
+
