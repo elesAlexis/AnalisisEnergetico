@@ -81,7 +81,18 @@ anio_seleccionado = st.selectbox("Selecciona el año", anios_disponibles)
 df_anio = energy_source_distribution_american[energy_source_distribution_american['ANIO'] == anio_seleccionado]
 
 paises_disponibles = sorted(df_anio['PAIS'].unique())
-paises_seleccionados = st.multiselect("Selecciona los países a comparar", paises_disponibles, default=["Argentina", "Brasil", "Canadá", "Chile", "Colombia",  "México",  "Estados Unidos",  "Costa Rica"])
+# Lista de países que te gustaría ver por defecto
+default_countries = ["Argentina", "Brasil", "Canadá", "Chile", "Colombia",  "México",  "Estados Unidos",  "Costa Rica"]
+
+# Filtra los que realmente están disponibles en el año seleccionado
+default_valid = [pais for pais in default_countries if pais in paises_disponibles]
+
+# Ahora sí, usa el multiselect con valores válidos
+paises_seleccionados = st.multiselect(
+    "Selecciona los países a comparar",
+    options=paises_disponibles,
+    default=default_valid
+)
 
 if len(paises_seleccionados) >= 2:
     radar_fig = GraphicsView.plot_radar_energy_comparison(energy_source_distribution_american, selected_countries=paises_seleccionados, year=anio_seleccionado)

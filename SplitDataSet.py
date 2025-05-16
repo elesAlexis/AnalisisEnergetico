@@ -133,7 +133,7 @@ class SplitDataSet:
     @staticmethod
     def get_energy_source_distribution_american(df, year=2024, country=None):
         df_filtered = df[
-            (df['ANIO'] == year) &
+            (df['ANIO'].isin([2020, 2021, 2022, 2023, 2024])) &
             (df['MES'] == 12) &
             (df['PRODUCTO'].isin([
                 'Hidroeléctrica', 'Solar', 'Renovables combustibles', 
